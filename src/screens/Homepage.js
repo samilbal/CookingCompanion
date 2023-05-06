@@ -1,80 +1,116 @@
 import React, { useState, useEffect } from "react"
-import { Button, Image, ImageBackground } from "react-native"
+import {
+  Button,
+  FlatList,
+  Image,
+  ImageBackground,
+  ScrollView,
+} from "react-native"
 import { Text, View } from "react-native"
 import { StyleSheet } from "react-native"
-import dummyData from "../dummyData"
 import RecipeService from "../api/RecipeService"
 import { useDispatch, useSelector } from "react-redux"
 import { add } from "../store/RecipeStore"
+import Details from "./Details"
+import Card from "../components/Card"
 
 const Homepage = ({ navigation }) => {
-  const [data, setData] = useState({})
-  const recipe = dummyData[0].recipe
+  const dispatch = useDispatch()
+  const recipesArr = []
 
-  useEffect(() => {
-    RecipeService.getRecipes("chicken")
+  const fetchThings = (query) => {
+    RecipeService.getRecipes(`${query}`)
       .then((results) => {
-        setData({ results })
+        let recipes = []
+        for (let index = 0; index < results.length; index++) {
+          const element = results[index]
+          recipes.push(element.recipe)
+        }
+
+        dispatch(add({ type: "add", payload: { query, recipes } }))
       })
       .catch((error) => {
         console.error(error)
       })
+  }
 
-    addData
+  // useEffect(() => {
+  //   RecipeService.getRecipes("potato")
+  //     .then((results) => {
+  //       for (let index = 0; index < results.length; index++) {
+  //         const element = results[index]
+  //         recipesArr.push(element.recipe)
+  //       }
+  //       // console.log(recipesArr)
+  //       dispatch(
+  //         add({
+  //           type: "add",
+  //           payload: { query: "potato", recipes: recipesArr },
+  //         })
+  //       )
+  //     })
+  //     .catch((error) => {
+  //       console.error(error)
+  //     })
+  //   // fetchThings("potato")
+  //   // setLoading(false)
+  //   // setRecipes(allRecipeArrs)
+  // }, [])
+
+  useEffect(() => {
+    fetchThings("tomato")
   }, [])
 
-  const recipesArr = []
-
-  const addData = () => {
-    if (data.results) {
-      console.log(data.results[0].recipe.label)
-
-      for (let index = 0; index < data.results.length; index++) {
-        const element = data.results[index]
-        recipesArr.push(element.recipe)
-      }
-
-      useDispatch({ type: "add", payload: recipesArr })
-    }
-  }
-  // console.log(recipesArr)
+  const currentData = useSelector((state) => state)
+  // console.log(currentDat*a.data)
 
   return (
-    <View style={styles.container}>
-      <View style={styles.testContainer}>
-        <ImageBackground
-          source={{ uri: recipe.image }}
-          style={styles.testImageBackground}
-          blurRadius={3}
-        >
-          <Text style={styles.testText}>{recipe.label}</Text>
-        </ImageBackground>
+    <>
+      {/* <Button title="query potato" onPress={() => fetchThings("sauce")} />
+      <Button
+        title="clg titles"
+        onPress={() => console.log(currentData.data.tomato[3].label)}
+      /> */}
+      <View style={styles.container}>
+        {currentData.data ? (
+          <ScrollView>
+            {Object.keys(currentData.data).map((key) => (
+              // <Text> {currentData.data[key][0].label} </Text>
+              <FlatList
+                showsHorizontalScrollIndicator={false}
+                scrollToOverflowEnabled
+                horizontal
+                keyExtractor={(item) => item.label}
+                data={currentData.data[key]}
+                renderItem={(item) => (
+                  <Card navigation={navigation} item={item.item} />
+                )}
+              />
+            ))}
+          </ScrollView>
+        ) : (
+          <Text>nooooo</Text>
+        )}
       </View>
-    </View>
+    </>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    borderColor: "blue",
-    paddingTop: "50%",
-  },
-  testContainer: {
-    flex: 0.1,
-    borderColor: "blue",
-    borderWidth: 1,
-    // backgroundColor: "#000",
-  },
-  testImageBackground: {
-    height: 800,
-    width: 800,
-  },
-  testText: {
-    color: "white",
-    fontSize: 24,
-    fontWeight: 800,
+    // flex: 1,
   },
 })
 
 export default Homepage
+
+{
+  /* <FlatList
+showsHorizontalScrollIndicator={false}
+horizontal
+data={currentData.data.tomato}
+renderItem={(item) => (
+  <Card navigation={navigation} item={item.item} />
+)}
+/> */
+}

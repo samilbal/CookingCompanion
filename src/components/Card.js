@@ -1,95 +1,80 @@
-import React, { useEffect, useState } from "react"
-import Edam from "../api/Edam"
-import { ImageBackground, Text, View, StyleSheet } from "react-native"
+import React from "react"
+import {
+  ImageBackground,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native"
 import { Button } from "react-native-paper"
 
-const Card = ({ route, navigation }) => {
-  //   const { recipe } = route.params
-  console.log(route.params.recipe)
-  //   console.log(JSON.stringify(recipe))
+const Card = ({ item, navigation }) => {
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={{ uri: route.params.recipe.img }}
-        style={styles.testImageBackground}
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Details", { item: item })}
       >
-        <View style={styles.testView}>
-          <View style={styles.testTopContainer}>
-            <Text style={styles.testTopTitle}>Midnight Ideas</Text>
-          </View>
-          <View style={styles.testBottomContainer}>
-            <View>
-              <Text style={styles.testTitle}>Kale Pesto Pasta</Text>
-              <Text style={styles.testSubtitle}>Food Republic</Text>
+        <ImageBackground
+          source={{ uri: item.image }}
+          style={styles.imageBackground}
+        >
+          <View style={styles.view}>
+            <View style={styles.topContainer}>
+              <Text style={styles.topTitle}> {item.cuisineType[0]} </Text>
             </View>
-            <Button
-              icon="heart"
-              mode="contained"
-              onPress={() => console.log("Pressed")}
-              style={{
-                width: 115,
-                height: 35,
-                justifyContent: "center",
-                position: "relative",
-                right: 40,
-                top: 40,
-                backgroundColor: "rgba(156,40,60,0.8)",
-              }}
-              contentStyle={{
-                flexDirection: "row-reverse",
-                justifyContent: "space-between",
-                height: 40,
-                width: 115,
-              }}
-            >
-              Favorite
-            </Button>
+            <View style={styles.bottomContainer}>
+              <View>
+                <Text style={styles.title} numberOfLines={1}>
+                  {item.label}
+                </Text>
+                <Text style={styles.subtitle}> {item.dishType[0]} </Text>
+              </View>
+            </View>
           </View>
-        </View>
-      </ImageBackground>
+          <Button
+            icon="heart"
+            mode="contained"
+            onPress={() => console.log("Pressed")}
+            style={styles.buttonStyle}
+            contentStyle={styles.buttonContentStyle}
+          >
+            Fav
+          </Button>
+        </ImageBackground>
+      </TouchableOpacity>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: "50%",
-    paddingLeft: "15%",
+    // flex: 1,
+    // borderColor: "rgba(156,40,60,0.8)",
+    // borderWidth: 9,
+    // borderRadius: 12,
   },
-  testContainer: {
-    borderColor: "blue",
-    borderWidth: 1,
-  },
-  testImageBackground: {
+  imageBackground: {
     height: 290,
     width: 290,
-    position: "relative",
     borderRadius: 50,
   },
-  testText: {
-    color: "white",
-    fontSize: 24,
-    fontWeight: 800,
-    position: "absolute",
-    bottom: 10,
-  },
-  testTitle: {
+  title: {
     color: "white",
     fontSize: 24,
     fontWeight: 500,
   },
-  testSubtitle: {
+  subtitle: {
     color: "white",
     fontSize: 12,
     fontWeight: 500,
+    textTransform: "capitalize",
   },
-  testView: {
+  view: {
     flex: 1,
     justifyContent: "space-between",
     backgroundColor: "rgba(1,0,0,0.5)",
   },
-  testTopContainer: {
+  topContainer: {
     marginTop: 10,
     paddingLeft: 25,
     paddingVertical: 3,
@@ -97,19 +82,34 @@ const styles = StyleSheet.create({
     width: 150,
     borderTopRightRadius: 12,
   },
-  testTopTitle: {
+  topTitle: {
     color: "white",
     fontSize: 12,
     fontWeight: 700,
+    textTransform: "capitalize",
   },
-  testBottomContainer: {
+  bottomContainer: {
     paddingLeft: 25,
     paddingBottom: 35,
     backgroundColor: "rgba(19,15,26,0.4)",
     borderTopRightRadius: 24,
     flexDirection: "row",
   },
-  button: {},
+  buttonStyle: {
+    width: 80,
+    height: 35,
+    justifyContent: "center",
+    position: "absolute",
+    right: 5,
+    bottom: 10,
+    backgroundColor: "rgba(156,40,60,0.8)",
+  },
+  buttonContentStyle: {
+    flexDirection: "row-reverse",
+    justifyContent: "space-between",
+    height: 40,
+    width: 75,
+  },
 })
 
 export default Card

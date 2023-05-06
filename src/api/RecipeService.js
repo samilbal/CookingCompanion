@@ -6,6 +6,7 @@ class RecipeService {
       const response = await Edam.get("", {
         params: {
           q: query,
+          random: true,
         },
       })
       return response.data.hits

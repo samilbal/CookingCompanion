@@ -10,17 +10,13 @@ const Test = ({ navigation }) => {
   useEffect(() => {
     RecipeService.getRecipes("chicken")
       .then((results) => {
-        // console.log(results[0].recipe.image)
-        setData({ img: results[0].recipe.image })
+        setData({ img: results[0].recipe.image, recipe: results[0].recipe })
       })
       .catch((error) => {
         console.error(error)
       })
   }, [])
 
-  // loop through results array and pass each item on the array as a prop to card like <Card recipe />
-
-  console.log(data)
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -58,15 +54,18 @@ const Test = ({ navigation }) => {
             >
               Favorite
             </Button>
-            <Button
-              title="go to card"
-              onPress={navigation.navigate("Card", {
-                recipe: data,
-              })}
-            />
           </View>
         </View>
       </ImageBackground>
+      <Button
+        title="go to card"
+        style={{ backgroundColor: "red" }}
+        onPress={() =>
+          navigation.navigate("Card", {
+            recipe: data.recipe,
+          })
+        }
+      />
     </View>
   )
 }

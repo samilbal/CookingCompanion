@@ -1,18 +1,32 @@
-import { createSlice, configureStore } from "@reduxjs/toolkit"
+import {
+  createSlice,
+  configureStore,
+  MiddlewareArray,
+  getDefaultMiddleware,
+} from "@reduxjs/toolkit"
 
 const recipeSlice = createSlice({
   name: "recipe",
-  initialState: { data: {} },
+  initialState: {},
   reducers: {
     add: (state, action) => {
-      state.data = action.payload.payload
-      console.log(state)
+      const { query } = action.payload.payload
+      const { recipes } = action.payload.payload
+
+      state.data = {
+        ...state.data,
+        [query]: recipes,
+      }
     },
   },
 })
 
 const RecipeStore = configureStore({
   reducer: recipeSlice.reducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 })
 export const { add } = recipeSlice.actions
 
