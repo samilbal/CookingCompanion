@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { add } from "../store/RecipeStore"
 import Details from "./Details"
 import Card from "../components/Card"
+import initialToUppercase from "../functions/initialToUppercase"
 
 const Homepage = ({ navigation }) => {
   const dispatch = useDispatch()
@@ -58,7 +59,7 @@ const Homepage = ({ navigation }) => {
   // }, [])
 
   useEffect(() => {
-    fetchThings("tomato")
+    fetchThings("breakfast")
   }, [])
 
   const currentData = useSelector((state) => state)
@@ -75,22 +76,28 @@ const Homepage = ({ navigation }) => {
         {currentData.data ? (
           <ScrollView>
             {Object.keys(currentData.data).map((key) => (
-              // <Text> {currentData.data[key][0].label} </Text>
-              <FlatList
-                showsHorizontalScrollIndicator={false}
-                scrollToOverflowEnabled
-                horizontal
-                keyExtractor={(item) => item.label}
-                data={currentData.data[key]}
-                renderItem={(item) => (
-                  <Card navigation={navigation} item={item.item} />
-                )}
-              />
+              <View
+                key={(item, index) => {
+                  return item
+                }}
+              >
+                <Text style={{ textTransform: "capitalize" }}>{key}</Text>
+                <FlatList
+                  showsHorizontalScrollIndicator={false}
+                  scrollToOverflowEnabled
+                  horizontal
+                  keyExtractor={(item, index) => {
+                    return item.label
+                  }}
+                  data={currentData.data[key]}
+                  renderItem={(item) => (
+                    <Card navigation={navigation} item={item.item} />
+                  )}
+                />
+              </View>
             ))}
           </ScrollView>
-        ) : (
-          <Text>nooooo</Text>
-        )}
+        ) : null}
       </View>
     </>
   )
