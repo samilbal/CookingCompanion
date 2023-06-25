@@ -2,15 +2,13 @@ import React from "react"
 import { View, StyleSheet, ImageBackground } from "react-native"
 import { Text } from "react-native-elements"
 import Ingredients from "../components/Ingredients"
-import initialToUppercase from "../functions/initialToUppercase"
-import Instructions from "../components/Instructions"
+import { Button } from "react-native-paper"
+import { Linking } from "react-native"
 
 const Details = ({ route, navigation }) => {
   const { item } = route.params
-  console.log(item.recipe)
-  console.log(item.url)
-
   let url = ""
+
   item.images.LARGE ? (url = item.images.LARGE.url) : (url = item.image)
   return (
     <View
@@ -24,16 +22,28 @@ const Details = ({ route, navigation }) => {
         resizeMode="cover"
       >
         <Text style={styles.dishType}>{item.dishType[0]}</Text>
-        <Instructions instructions={item.instructions} />
+        <Button
+          icon="open-in-new"
+          mode="contained"
+          style={{ width: 170, left: -20, borderBottomRightRadius: 0 }}
+          contentStyle={{ flexDirection: "row-reverse" }}
+          onPress={() =>
+            Linking.openURL(
+              // the url is the same for all recipes
+              "https://www.allrecipes.com/recipe/261547/chorizo-breakfast-tacos-with-potato-hash-and-eggs/"
+            )
+          }
+        >
+          Instructions
+        </Button>
       </ImageBackground>
       <View style={styles.container}>
-        <Text> {item.label} </Text>
-        <Text> Ingredients: </Text>
-        <View>
+        <Text style={styles.subTitle}>{item.label}</Text>
+        <Text style={styles.title}>Ingredients:</Text>
+        <View style={styles.ingredientsContainer}>
           <Ingredients ingredientLines={item.ingredientLines} />
         </View>
       </View>
-      <View style={styles.container}></View>
     </View>
   )
 }
@@ -41,8 +51,6 @@ const Details = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   imageBackground: {
     height: 250,
-    // borderWidth: 1,
-    // borderColor: "black",
     justifyContent: "space-between",
   },
   dishType: {
@@ -59,6 +67,24 @@ const styles = StyleSheet.create({
   container: {
     borderColor: "black",
     borderWidth: 1,
+    padding: 4,
+    height: 440,
+    alignItems: "center",
+  },
+
+  title: {
+    fontSize: 18,
+    fontWeight: 600,
+  },
+  subTitle: {
+    fontSize: 24,
+    textTransform: "capitalize",
+    fontWeight: 800,
+  },
+  ingredientsContainer: {
+    marginVertical: 8,
+    justifyContent: "space-between",
+    flex: 1,
   },
 })
 

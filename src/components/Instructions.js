@@ -5,9 +5,9 @@ import { Button } from "react-native-paper"
 const Instructions = ({ instructions }) => {
   return (
     <Button
-      icon="camera"
+      icon="open-in-new"
       mode="contained"
-      style={{ width: 150, left: -20, borderBottomRightRadius: 0 }}
+      style={{ width: 170, left: -20, borderBottomRightRadius: 0 }}
       contentStyle={{ flexDirection: "row-reverse" }}
     >
       Instructions

@@ -35,35 +35,16 @@ const Homepage = ({ navigation }) => {
       })
   }
 
-  // useEffect(() => {
-  //   RecipeService.getRecipes("potato")
-  //     .then((results) => {
-  //       for (let index = 0; index < results.length; index++) {
-  //         const element = results[index]
-  //         recipesArr.push(element.recipe)
-  //       }
-  //       // console.log(recipesArr)
-  //       dispatch(
-  //         add({
-  //           type: "add",
-  //           payload: { query: "potato", recipes: recipesArr },
-  //         })
-  //       )
-  //     })
-  //     .catch((error) => {
-  //       console.error(error)
-  //     })
-  //   // fetchThings("potato")
-  //   // setLoading(false)
-  //   // setRecipes(allRecipeArrs)
-  // }, [])
-
   useEffect(() => {
     fetchThings("breakfast")
+    fetchThings("lunch")
+    fetchThings("snacks")
+    fetchThings("dinner")
+    fetchThings("drinks")
   }, [])
 
   const currentData = useSelector((state) => state)
-  // console.log(currentDat*a.data)
+  // console.log(Object.keys(currentData))
 
   return (
     <>
@@ -76,22 +57,15 @@ const Homepage = ({ navigation }) => {
         {currentData.data ? (
           <ScrollView>
             {Object.keys(currentData.data).map((key) => (
-              <View
-                key={(item, index) => {
-                  return item
-                }}
-              >
-                <Text style={{ textTransform: "capitalize" }}>{key}</Text>
+              <View style={styles.listContainer}>
+                <Text style={styles.queries}>{key}</Text>
                 <FlatList
                   showsHorizontalScrollIndicator={false}
                   scrollToOverflowEnabled
                   horizontal
-                  keyExtractor={(item, index) => {
-                    return item.label
-                  }}
                   data={currentData.data[key]}
                   renderItem={(item) => (
-                    <Card navigation={navigation} item={item.item} />
+                    <Card fav navigation={navigation} item={item.item} />
                   )}
                 />
               </View>
@@ -106,18 +80,18 @@ const Homepage = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
+    backgroundColor: "#ae2012",
+  },
+  queries: {
+    textTransform: "capitalize",
+    marginLeft: 8,
+    fontSize: 18,
+    fontWeight: 500,
+    color: "#fca311",
+  },
+  listContainer: {
+    marginVertical: 4,
   },
 })
 
 export default Homepage
-
-{
-  /* <FlatList
-showsHorizontalScrollIndicator={false}
-horizontal
-data={currentData.data.tomato}
-renderItem={(item) => (
-  <Card navigation={navigation} item={item.item} />
-)}
-/> */
-}

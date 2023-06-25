@@ -7,41 +7,50 @@ import {
   TouchableOpacity,
 } from "react-native"
 import { Button } from "react-native-paper"
+import { useDispatch, useSelector } from "react-redux"
+import { favorite } from "../store/RecipeStore"
 
-const Card = ({ item, navigation }) => {
+const Card = ({ item, navigation, fav }) => {
+  const dispatch = useDispatch()
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Details", { item: item })}
-      >
-        <ImageBackground
-          source={{ uri: item.image }}
-          style={styles.imageBackground}
+      {item.image && item.label && item.dishType && item.cuisineType ? (
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Details", { item: item })}
         >
-          <View style={styles.view}>
-            <View style={styles.topContainer}>
-              <Text style={styles.topTitle}> {item.cuisineType[0]} </Text>
-            </View>
-            <View style={styles.bottomContainer}>
-              <View>
-                <Text style={styles.title} numberOfLines={1}>
-                  {item.label}
-                </Text>
-                <Text style={styles.subtitle}> {item.dishType[0]} </Text>
+          <ImageBackground
+            source={{ uri: item.image }}
+            style={styles.imageBackground}
+          >
+            <View style={styles.view}>
+              <View style={styles.topContainer}>
+                <Text style={styles.topTitle}> {item.cuisineType[0]} </Text>
+              </View>
+              <View style={styles.bottomContainer}>
+                <View>
+                  <Text style={styles.title} numberOfLines={1}>
+                    {item.label}
+                  </Text>
+                  <Text style={styles.subtitle}> {item.dishType[0]} </Text>
+                </View>
               </View>
             </View>
-          </View>
-          <Button
-            icon="heart"
-            mode="contained"
-            onPress={() => console.log("Pressed")}
-            style={styles.buttonStyle}
-            contentStyle={styles.buttonContentStyle}
-          >
-            Fav
-          </Button>
-        </ImageBackground>
-      </TouchableOpacity>
+            {fav ? (
+              <Button
+                icon="heart"
+                mode="contained"
+                onPress={() =>
+                  dispatch(favorite({ type: "favorite", recipe: item }))
+                }
+                style={styles.buttonStyle}
+                contentStyle={styles.buttonContentStyle}
+              >
+                Fav
+              </Button>
+            ) : null}
+          </ImageBackground>
+        </TouchableOpacity>
+      ) : null}
     </View>
   )
 }
@@ -49,8 +58,8 @@ const Card = ({ item, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    // borderColor: "rgba(156,40,60,0.8)",
-    // borderWidth: 9,
+    borderColor: "rgba(156,40,60,0.8)",
+    borderWidth: 1,
     // borderRadius: 12,
   },
   imageBackground: {
@@ -59,7 +68,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   title: {
-    color: "white",
+    color: "#fca311",
     fontSize: 24,
     fontWeight: 500,
   },

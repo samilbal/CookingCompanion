@@ -32,6 +32,7 @@ export default function App() {
             initialRouteName="HomeStack"
             activeColor="#d95c5c"
             shifting={true}
+            screenOptions={{ tabBarColor: "#fca311" }}
           >
             <Tab.Screen
               name="HomeStack"
@@ -44,7 +45,7 @@ export default function App() {
                 ),
               }}
             />
-            <Tab.Screen
+            {/* <Tab.Screen
               name="Recipes"
               key={2}
               component={Recipes}
@@ -58,7 +59,7 @@ export default function App() {
                   />
                 ),
               }}
-            />
+            /> */}
             <Tab.Screen
               name="Favorites"
               key={3}
@@ -74,7 +75,7 @@ export default function App() {
                 ),
               }}
             />
-            <Tab.Screen
+            {/* <Tab.Screen
               name="Settings"
               key={4}
               component={Settings}
@@ -88,8 +89,8 @@ export default function App() {
                   />
                 ),
               }}
-            />
-            <Tab.Screen name="Details" component={Details} />
+            /> */}
+            {/* <Tab.Screen name="Details" component={Details} /> */}
             {/* <Tab.Screen name="Card" component={Card} /> */}
           </Tab.Navigator>
         </NavigationContainer>

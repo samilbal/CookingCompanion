@@ -7,8 +7,16 @@ import {
 
 const recipeSlice = createSlice({
   name: "recipe",
-  initialState: {},
+  initialState: { favorites: {} },
   reducers: {
+    favorite: (state, action) => {
+      console.log(state.favorites)
+      const recipe = action.payload.recipe
+      state.favorites = {
+        ...state.favorites,
+        [recipe.label]: recipe,
+      }
+    },
     add: (state, action) => {
       const { query } = action.payload.payload
       const { recipes } = action.payload.payload
@@ -28,6 +36,6 @@ const RecipeStore = configureStore({
       serializableCheck: false,
     }),
 })
-export const { add } = recipeSlice.actions
+export const { add, favorite } = recipeSlice.actions
 
 export default RecipeStore
